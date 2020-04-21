@@ -363,7 +363,19 @@
       
         
           
-            <h3 id="开始记录c-11的学习"><a href="#开始记录c-11的学习" class="headerlink" title="开始记录c++11的学习"></a>开始记录c++11的学习</h3>
+            <h2 id="目的：自动类型推断"><a href="#目的：自动类型推断" class="headerlink" title="目的：自动类型推断"></a>目的：自动类型推断</h2><p>auto关键字的目的是简化一些类型冗长的复杂变量的声明，比如迭代器，而并非解释型语言的自动类型</p>
+<h2 id="应用场景"><a href="#应用场景" class="headerlink" title="应用场景"></a>应用场景</h2><ul>
+<li>在变量声明的时候根据初始化表达式自动推断该变量的类型</li>
+<li>在声明函数时作为函数返回值的占位符</li>
+</ul>
+<h2 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h2><p>在使用的时候，需要注意一下几个方面</p>
+<ol>
+<li>auto 和 auto*和指针类型变量配合使用时，效果是一样的<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> x = <span class="number">10</span>;</span><br><span class="line"><span class="keyword">auto</span> a = &amp;x;</span><br><span class="line"><span class="keyword">auto</span> *b = &amp;x;</span><br><span class="line"></span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; <span class="keyword">typeid</span>(a).name() &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; <span class="keyword">typeid</span>(b).name() &lt;&lt; <span class="built_in">endl</span>;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<p><img src="images/auto1.png" alt="输出结果"></p>
+
           
         
       
@@ -477,6 +489,19 @@
         
 
         <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/Gavin-Lau" target="_blank" title="Github">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                    
+                      Github
+                    
+                </a>
+              </span>
+            
           
         </div>
 
