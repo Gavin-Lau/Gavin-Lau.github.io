@@ -103,7 +103,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="http://yoursite.com/2020/04/21/auto/images/auto1.png">
 <meta property="article:published_time" content="2020-04-21T04:53:21.000Z">
-<meta property="article:modified_time" content="2020-04-21T08:02:27.834Z">
+<meta property="article:modified_time" content="2020-04-21T08:11:49.675Z">
 <meta property="article:author" content="Gavin Lau">
 <meta property="article:tag" content="c++11">
 <meta property="article:tag" content="auto">
@@ -373,10 +373,8 @@
 <h2 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h2><p>在使用的时候，需要注意一下几个方面</p>
 <ol>
 <li>auto 和 auto*和指针类型变量配合使用时，效果是一样的<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> x = <span class="number">10</span>;</span><br><span class="line"><span class="keyword">auto</span> a = &amp;x;</span><br><span class="line"><span class="keyword">auto</span> *b = &amp;x;</span><br><span class="line"></span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; <span class="keyword">typeid</span>(a).name() &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; <span class="keyword">typeid</span>(b).name() &lt;&lt; <span class="built_in">endl</span>;</span><br></pre></td></tr></table></figure>
-
-</li>
+输出结果:<br><img src="images/auto1.png" alt="输出结果"></li>
 </ol>
-<p><img src="images/auto1.png" alt="输出结果"></p>
 
       
     </div>
