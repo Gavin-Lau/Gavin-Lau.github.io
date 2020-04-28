@@ -270,6 +270,309 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/04/28/go-by-example-commandline/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Gavin Lau">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gavin's Study Diary">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/04/28/go-by-example-commandline/" itemprop="url">go-by-example(三) 之 Command-Line</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-04-28T12:53:21+08:00">
+                2020-04-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/go/" itemprop="url" rel="index">
+                    <span itemprop="name">go</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="Subcommands"><a href="#Subcommands" class="headerlink" title="Subcommands"></a>Subcommands</h2><p>go也支持像git一样的子命令行参数，子命令行参数有他们自己的参数。<br>很好理解，直接上代码   </p>
+<figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">   fooCmd := flag.NewFlagSet(<span class="string">"foo"</span>, flag.ExitOnError)</span><br><span class="line">   fooEnable := fooCmd.Bool(<span class="string">"enable"</span>, <span class="literal">false</span>, <span class="string">"enable"</span>)</span><br><span class="line">   fooName := fooCmd.String(<span class="string">"name"</span>, <span class="string">""</span>, <span class="string">"name"</span>)</span><br><span class="line"></span><br><span class="line">   barCmd := flag.NewFlagSet(<span class="string">"bar"</span>, flag.ExitOnError)</span><br><span class="line">   barLevel := barCmd.Int(<span class="string">"level"</span>, <span class="number">0</span>, <span class="string">"level"</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">switch</span> os.Args[<span class="number">1</span>] &#123;</span><br><span class="line"><span class="keyword">case</span> <span class="string">"foo"</span>:</span><br><span class="line">       fooCmd.Parse(os.Args[<span class="number">2</span>:])</span><br><span class="line">       fmt.Println(<span class="string">"subcommand 'foo'"</span>)</span><br><span class="line">       fmt.Println(<span class="string">"  enable:"</span>, *fooEnable)</span><br><span class="line">       fmt.Println(<span class="string">"  name:"</span>, *fooName)</span><br><span class="line">       fmt.Println(<span class="string">"  tail:"</span>, fooCmd.Args())</span><br><span class="line">   <span class="keyword">case</span> <span class="string">"bar"</span>:</span><br><span class="line">       barCmd.Parse(os.Args[<span class="number">2</span>:])</span><br><span class="line">       fmt.Println(<span class="string">"subcommand 'bar'"</span>)</span><br><span class="line">       fmt.Println(<span class="string">"  level:"</span>, *barLevel)</span><br><span class="line">       fmt.Println(<span class="string">"  tail:"</span>, barCmd.Args())</span><br><span class="line">   <span class="keyword">default</span>:</span><br><span class="line">       fmt.Println(<span class="string">"expected 'foo' or 'bar' subcommands"</span>)</span><br><span class="line">       os.Exit(<span class="number">1</span>)</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/04/26/go-by-example-context/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Gavin Lau">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gavin's Study Diary">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/04/26/go-by-example-context/" itemprop="url">go-by-example(二) 之 context</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-04-26T12:53:21+08:00">
+                2020-04-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/go/" itemprop="url" rel="index">
+                    <span itemprop="name">go</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="对于Context的概念之前也都不是很清楚，所以专门拿出来详细学习"><a href="#对于Context的概念之前也都不是很清楚，所以专门拿出来详细学习" class="headerlink" title="对于Context的概念之前也都不是很清楚，所以专门拿出来详细学习"></a>对于Context的概念之前也都不是很清楚，所以专门拿出来详细学习</h2><h2 id="context的使用场景"><a href="#context的使用场景" class="headerlink" title="context的使用场景"></a>context的使用场景</h2><p>与goruntime配合使用，也就是说他用在单业务跨多协程，保持各个协程高度一致的作用，当上层的goruntime执行失败时，可以通过context传递信息到底层的goruntime，尽量早的释放资源。</p>
+<h2 id="Context的底层结构"><a href="#Context的底层结构" class="headerlink" title="Context的底层结构"></a>Context的底层结构</h2><figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> Context <span class="keyword">interface</span> &#123;</span><br><span class="line">	Deadline() (deadline time.Time, ok <span class="keyword">bool</span>)</span><br><span class="line">	Done() &lt;- <span class="keyword">chan</span> <span class="keyword">struct</span>&#123;&#125;</span><br><span class="line">	Err() error</span><br><span class="line">	Value(key <span class="keyword">interface</span>&#123;&#125;) <span class="keyword">interface</span>&#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="主要对于这4个接口的理解，对于context的理解和使用"><a href="#主要对于这4个接口的理解，对于context的理解和使用" class="headerlink" title="主要对于这4个接口的理解，对于context的理解和使用"></a>主要对于这4个接口的理解，对于context的理解和使用</h2><ul>
+<li>Deadline: 返回当前context的任务将要被取消的deadline，如果没有deadline，ok 返回false</li>
+<li>Done: 当前context被取消时，将返回一个关闭的channel，这里的利用的channel的特性:  <blockquote>
+<p>如果channel c已经被关闭,继续往它发送数据会导致panic(send on closed channel),但是从这个关闭的channel中不但可以读取出已发送的数据，还可以不断的读取零值</p>
+</blockquote>
+<figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">c := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">int</span>, <span class="number">10</span>)</span><br><span class="line">c &lt;- <span class="number">1</span></span><br><span class="line">c &lt;- <span class="number">2</span></span><br><span class="line"><span class="built_in">close</span>(c)</span><br><span class="line">fmt.Println(&lt;-c) <span class="comment">//1</span></span><br><span class="line">fmt.Println(&lt;-c) <span class="comment">//2</span></span><br><span class="line">fmt.Println(&lt;-c) <span class="comment">//0</span></span><br><span class="line">fmt.Println(&lt;-c) <span class="comment">//0</span></span><br></pre></td></tr></table></figure></li>
+<li>Err 配合Done使用，在Done返回后，Err告诉程序猿Done的原因</li>
+<li>Value 用于同一个上下问中，在不同的goruntime中传递特定的数据，是一个键值队，所以要通过一个key获取对应的value，线程安全</li>
+</ul>
+<h2 id="使用方法"><a href="#使用方法" class="headerlink" title="使用方法"></a>使用方法</h2><h3 id="golang提供了4个创建context的方式"><a href="#golang提供了4个创建context的方式" class="headerlink" title="golang提供了4个创建context的方式:"></a>golang提供了4个创建context的方式:</h3><figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 创建一个上下文，返回cancel函数，需要主动调用cancel函数来结束这个上下文</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">WithCancel</span><span class="params">(parent Context)</span> <span class="params">(ctx Context, cancel CancelFunc)</span></span> </span><br><span class="line"><span class="comment">// 创建一个带超时时间点的上下文，也会返回cancel函数，用于主动结束这个上下文</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">WithDeadline</span><span class="params">(parent Context, deadline time.Time)</span> <span class="params">(Context, CancelFunc)</span></span></span><br><span class="line"><span class="comment">// 创建一个带超时时长的上下文</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">WithTimeout</span><span class="params">(parent Context, timeout time.Duration)</span> <span class="params">(Context, CancelFunc)</span></span></span><br><span class="line"><span class="comment">// 给当前上下文插入数据，或者修改数据</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">WithValue</span><span class="params">(parent Context, key, val <span class="keyword">interface</span>&#123;&#125;)</span> <span class="title">Context</span></span></span><br></pre></td></tr></table></figure>
+<h3 id="两个很典型的例子"><a href="#两个很典型的例子" class="headerlink" title="两个很典型的例子"></a>两个很典型的例子</h3><ol>
+<li>一个context控制多个goruntime<figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	ctx, cancel := context.WithCancel(context.Background())</span><br><span class="line">	<span class="keyword">go</span> watch(ctx,<span class="string">"【监控1】"</span>)</span><br><span class="line">	<span class="keyword">go</span> watch(ctx,<span class="string">"【监控2】"</span>)</span><br><span class="line">	<span class="keyword">go</span> watch(ctx,<span class="string">"【监控3】"</span>)</span><br><span class="line"></span><br><span class="line">	time.Sleep(<span class="number">10</span> * time.Second)</span><br><span class="line">	fmt.Println(<span class="string">"可以了，通知监控停止"</span>)</span><br><span class="line">	cancel()</span><br><span class="line">	<span class="comment">//为了检测监控过是否停止，如果没有监控输出，就表示停止了</span></span><br><span class="line">	time.Sleep(<span class="number">5</span> * time.Second)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">watch</span><span class="params">(ctx context.Context, name <span class="keyword">string</span>)</span></span> &#123;</span><br><span class="line">	<span class="keyword">for</span> &#123;</span><br><span class="line">		<span class="keyword">select</span> &#123;</span><br><span class="line">		<span class="keyword">case</span> &lt;-ctx.Done():</span><br><span class="line">			fmt.Println(name,<span class="string">"监控退出，停止了..."</span>)</span><br><span class="line">			<span class="keyword">return</span></span><br><span class="line">		<span class="keyword">default</span>:</span><br><span class="line">			fmt.Println(name,<span class="string">"goroutine监控中..."</span>)</span><br><span class="line">			time.Sleep(<span class="number">2</span> * time.Second)</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>context WithValue使用<figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> key <span class="keyword">string</span>=<span class="string">"name"</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	ctx, cancel := context.WithCancel(context.Background())</span><br><span class="line">	<span class="comment">//附加值</span></span><br><span class="line">	valueCtx:=context.WithValue(ctx,key,<span class="string">"【监控1】"</span>)</span><br><span class="line">	<span class="keyword">go</span> watch(valueCtx)</span><br><span class="line">	time.Sleep(<span class="number">10</span> * time.Second)</span><br><span class="line">	fmt.Println(<span class="string">"可以了，通知监控停止"</span>)</span><br><span class="line">	cancel()</span><br><span class="line">	<span class="comment">//为了检测监控过是否停止，如果没有监控输出，就表示停止了</span></span><br><span class="line">	time.Sleep(<span class="number">5</span> * time.Second)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">watch</span><span class="params">(ctx context.Context)</span></span> &#123;</span><br><span class="line">	<span class="keyword">for</span> &#123;</span><br><span class="line">		<span class="keyword">select</span> &#123;</span><br><span class="line">		<span class="keyword">case</span> &lt;-ctx.Done():</span><br><span class="line">			<span class="comment">//取出值</span></span><br><span class="line">			fmt.Println(ctx.Value(key),<span class="string">"监控退出，停止了..."</span>)</span><br><span class="line">			<span class="keyword">return</span></span><br><span class="line">		<span class="keyword">default</span>:</span><br><span class="line">			<span class="comment">//取出值</span></span><br><span class="line">			fmt.Println(ctx.Value(key),<span class="string">"goroutine监控中..."</span>)</span><br><span class="line">			time.Sleep(<span class="number">2</span> * time.Second)</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<h2 id="attentions"><a href="#attentions" class="headerlink" title="attentions"></a>attentions</h2><p>context一般配合select使用，对于select的使用注意带default分支和不带default分支的区别<br><code>当 select 中的其它分支都没有准备好时，default 分支就会执行(这里Sleep的使用要慎重考虑)。</code></p>
+<figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	tick := time.Tick(<span class="number">100</span> * time.Millisecond)</span><br><span class="line">	boom := time.After(<span class="number">500</span> * time.Millisecond)</span><br><span class="line">	<span class="keyword">for</span> &#123;</span><br><span class="line">		<span class="keyword">select</span> &#123;</span><br><span class="line">		<span class="keyword">case</span> &lt;-tick:</span><br><span class="line">			fmt.Println(<span class="string">"tick."</span>)</span><br><span class="line">		<span class="keyword">case</span> &lt;-boom:</span><br><span class="line">			fmt.Println(<span class="string">"BOOM!"</span>)</span><br><span class="line">			<span class="keyword">return</span></span><br><span class="line">		<span class="keyword">default</span>:</span><br><span class="line">			fmt.Println(<span class="string">"    ."</span>)</span><br><span class="line">			time.Sleep(<span class="number">50</span> * time.Millisecond)</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/04/24/go-by-example1/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -289,7 +592,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2020/04/24/go-by-example1/" itemprop="url">go-by-example再刷(一)</a></h1>
+                <a class="post-title-link" href="/2020/04/24/go-by-example1/" itemprop="url">go-by-example(一) 之 exit、singal、exec</a></h1>
         
 
         <div class="post-meta">
@@ -398,147 +701,6 @@
 
 
 
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/04/24/go-by-example-context/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Gavin Lau">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gavin's Study Diary">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/04/24/go-by-example-context/" itemprop="url">go-by-example再刷(一)</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-04-24T12:53:21+08:00">
-                2020-04-24
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/go/" itemprop="url" rel="index">
-                    <span itemprop="name">go</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="对于Context的概念之前也都不是很清楚，所以专门拿出来详细学习"><a href="#对于Context的概念之前也都不是很清楚，所以专门拿出来详细学习" class="headerlink" title="对于Context的概念之前也都不是很清楚，所以专门拿出来详细学习"></a>对于Context的概念之前也都不是很清楚，所以专门拿出来详细学习</h2>
           
         
       
@@ -775,7 +937,7 @@ attention:<strong>场景二已经在c++14标准里删除</strong></li>
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-count">4</span>
                 <span class="site-state-item-name">posts</span>
               </a>
             </div>
@@ -797,7 +959,7 @@ attention:<strong>场景二已经在c++14标准里删除</strong></li>
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-count">7</span>
                 <span class="site-state-item-name">tags</span>
               </a>
             </div>
