@@ -101,13 +101,15 @@
 <meta property="og:site_name" content="Gavin&#39;s Study Diary">
 <meta property="og:description" content="go mod开启1export GO111MODULE&#x3D;on 至于网上说的这个命令 1export GOPROXY&#x3D;https:&#x2F;&#x2F;goproxy.cn 我理解是对于使用go get 命令下载不到的会尝试使用此代理吧，比如golang的x库 go mod 常用命令只列出几个常用的命令  go mod init 初始化modules，使用这个命令以后，会创建go.mod 文件 go mod down">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://yoursite.com/images/gomod.png">
 <meta property="article:published_time" content="2020-05-26T04:53:21.000Z">
-<meta property="article:modified_time" content="2020-05-27T08:09:37.130Z">
+<meta property="article:modified_time" content="2020-05-27T08:59:27.550Z">
 <meta property="article:author" content="Gavin Lau">
 <meta property="article:tag" content="golang">
 <meta property="article:tag" content="go">
 <meta property="article:tag" content="go mod">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/images/gomod.png">
 
 
 
@@ -378,9 +380,12 @@
 <li>go list -m -versions {package-name} 查看名字叫 package-name的包的所有可用版本</li>
 </ol>
 <h3 id="go-mod-的优点"><a href="#go-mod-的优点" class="headerlink" title="go mod 的优点"></a>go mod 的优点</h3><ol>
-<li>以前go的所有项目只能在$GOPATH/src/ 下去创建相应的包，目录是死的</li>
-<li></li>
+<li>以前go的所有项目只能在$GOPATH/src/ 下去创建相应的包，目录是死的,使用了go module之后，可以彻底摆脱$GOPATH</li>
+<li>以前govendor，godep，各种版本的包管理工具林立，且不怎么好用，go mod 增加了对版本的支持</li>
+<li>使用go mod以后，go run、go build等工具链的包依赖关系都会交给go mod 去管理</li>
 </ol>
+<p>总之，go mod的出现，是对go的包依赖关系的解决方案的唯一正解</p>
+<h3 id="goland-启用对go-mod的支持"><a href="#goland-启用对go-mod的支持" class="headerlink" title="goland 启用对go mod的支持"></a>goland 启用对go mod的支持</h3><p>不解释，上图:<br><img src="/images/gomod.png" alt=""></p>
 
       
     </div>
@@ -557,7 +562,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#go-mod开启"><span class="nav-number">1.</span> <span class="nav-text">go mod开启</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#go-mod-常用命令"><span class="nav-number">2.</span> <span class="nav-text">go mod 常用命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#go-mod-的优点"><span class="nav-number">3.</span> <span class="nav-text">go mod 的优点</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#go-mod开启"><span class="nav-number">1.</span> <span class="nav-text">go mod开启</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#go-mod-常用命令"><span class="nav-number">2.</span> <span class="nav-text">go mod 常用命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#go-mod-的优点"><span class="nav-number">3.</span> <span class="nav-text">go mod 的优点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#goland-启用对go-mod的支持"><span class="nav-number">4.</span> <span class="nav-text">goland 启用对go mod的支持</span></a></li></ol></div>
             
 
           </div>
