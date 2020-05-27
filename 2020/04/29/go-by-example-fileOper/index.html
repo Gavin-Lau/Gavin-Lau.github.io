@@ -101,8 +101,9 @@
 <meta property="og:site_name" content="Gavin&#39;s Study Diary">
 <meta property="og:description" content="简述golang的defer、panic、recover扮演了像Java&#x2F;C++中的try…catch的角色 deferdefer的执行顺序FIFO,区别于LIFOdefer的执行时机在函数正常返回后，也就是return之后执行，所以defer常用来进行函数内部资源的释放12345678910111213141516171819    &#x2F;&#x2F;次例子基本包含了defer和return的所有场景func">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://blog.golang.org/defer-panic-and-recover">
 <meta property="article:published_time" content="2020-04-29T04:53:21.000Z">
-<meta property="article:modified_time" content="2020-05-08T09:08:21.524Z">
+<meta property="article:modified_time" content="2020-05-09T10:07:48.548Z">
 <meta property="article:author" content="Gavin Lau">
 <meta property="article:tag" content="golang">
 <meta property="article:tag" content="go">
@@ -111,6 +112,7 @@
 <meta property="article:tag" content="panic">
 <meta property="article:tag" content="recover">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog.golang.org/defer-panic-and-recover">
 
 
 
@@ -372,9 +374,16 @@
 <p>很有意思的一个例子</p>
 <figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">trace</span><span class="params">(s <span class="keyword">string</span>)</span> <span class="title">string</span></span> &#123;</span><br><span class="line">    fmt.Println(<span class="string">"entering:"</span>, s)</span><br><span class="line">    <span class="keyword">return</span> s</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">un</span><span class="params">(s <span class="keyword">string</span>)</span></span> &#123;</span><br><span class="line">    fmt.Println(<span class="string">"leaving"</span>, s)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">a</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="keyword">defer</span> un(trace(<span class="string">"b"</span>))</span><br><span class="line">    fmt.Println(<span class="string">"in a"</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">b</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="keyword">defer</span> un(trace(<span class="string">"b"</span>))</span><br><span class="line">    fmt.Println(<span class="string">"in b"</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    b()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h4 id="defer-配合recover，错误回收和处理"><a href="#defer-配合recover，错误回收和处理" class="headerlink" title="defer 配合recover，错误回收和处理"></a>defer 配合recover，错误回收和处理</h4><figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="keyword">defer</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">        <span class="keyword">if</span> err = <span class="built_in">recover</span>(); err != <span class="literal">nil</span> &#123;</span><br><span class="line">            <span class="comment">//DO SOMETHING, like </span></span><br><span class="line">            <span class="comment">// close fd,</span></span><br><span class="line">            <span class="comment">// rollback transaction</span></span><br><span class="line">            <span class="comment">// term context ...</span></span><br><span class="line">            fmt.Println(err)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">panic</span>(<span class="number">55</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="panic-recover"><a href="#panic-recover" class="headerlink" title="panic recover"></a>panic recover</h3><p>在文章<a href="https://blog.golang.org/defer-panic-and-recover" target="_blank" rel="noopener">Defer, Panic, and Recover</a>中，这么介绍panic的<br>当函数F panic之后，会立马停止正常的流程，开始panic，所有子F中的defer函数会正常执行，在调用F的函数中，F也会表现的像panic一样，就这样沿着调用栈一路向上，直到当前goruntime的最外层。</p>
+<p>同样，这么介绍recover的<br>recover是用来控制当前正在panic的goruntime的，recover只在defer函数中有效，一般的顺序执行调用recover，返回nil，没有其他什么效果</p>
+<p>举例说明</p>
+<figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    f()</span><br><span class="line">    fmt.Println(<span class="string">"Return normally from f."</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">f</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="keyword">defer</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">        <span class="keyword">if</span> r := <span class="built_in">recover</span>(); r != <span class="literal">nil</span> &#123;</span><br><span class="line">            fmt.Println(<span class="string">"Recover in f."</span>, r)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;()</span><br><span class="line"></span><br><span class="line">    fmt.Println(<span class="string">"Calling g."</span>)</span><br><span class="line">    g(<span class="number">0</span>)</span><br><span class="line">    fmt.Println(<span class="string">"Return normally from g."</span>) <span class="comment">//注意这里</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">g</span><span class="params">(i <span class="keyword">int</span>)</span></span> &#123;</span><br><span class="line">    <span class="keyword">if</span> i &gt; <span class="number">3</span> &#123;</span><br><span class="line">        fmt.Println(<span class="string">"Panicking!"</span>)</span><br><span class="line">        <span class="built_in">panic</span>(fmt.Sprintf(<span class="string">"%v"</span>, i))</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">defer</span> fmt.Println(<span class="string">"Defer in g"</span>, i)</span><br><span class="line">    fmt.Println(<span class="string">"Printing in g"</span>, i)</span><br><span class="line">    g(i + <span class="number">1</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 
-
+<hr>
+<ol>
+<li>Andrew Gerrand写过一篇文章<img src="https://blog.golang.org/defer-panic-and-recover" alt="Defer, Panic, and Recover"></li>
+</ol>
 
       
     </div>
@@ -424,6 +433,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/05/26/go-mod/" rel="prev" title="go-11 包管理工具 go mod">
+                go-11 包管理工具 go mod <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -500,7 +513,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-count">6</span>
                 <span class="site-state-item-name">posts</span>
               </a>
             </div>
@@ -522,7 +535,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">10</span>
+                <span class="site-state-item-count">11</span>
                 <span class="site-state-item-name">tags</span>
               </a>
             </div>
@@ -557,7 +570,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#简述"><span class="nav-number">1.</span> <span class="nav-text">简述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#defer"><span class="nav-number">2.</span> <span class="nav-text">defer</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#defer的执行顺序"><span class="nav-number">2.1.</span> <span class="nav-text">defer的执行顺序</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#defer的执行时机"><span class="nav-number">2.2.</span> <span class="nav-text">defer的执行时机</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#defer-配合recover，错误回收和处理"><span class="nav-number">2.3.</span> <span class="nav-text">defer 配合recover，错误回收和处理</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#简述"><span class="nav-number">1.</span> <span class="nav-text">简述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#defer"><span class="nav-number">2.</span> <span class="nav-text">defer</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#defer的执行顺序"><span class="nav-number">2.1.</span> <span class="nav-text">defer的执行顺序</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#defer的执行时机"><span class="nav-number">2.2.</span> <span class="nav-text">defer的执行时机</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#defer-配合recover，错误回收和处理"><span class="nav-number">2.3.</span> <span class="nav-text">defer 配合recover，错误回收和处理</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#panic-recover"><span class="nav-number">3.</span> <span class="nav-text">panic recover</span></a></li></ol></div>
             
 
           </div>

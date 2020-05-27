@@ -270,6 +270,164 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/05/26/go-mod/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Gavin Lau">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gavin's Study Diary">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/05/26/go-mod/" itemprop="url">go-11 包管理工具 go mod</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-05-26T12:53:21+08:00">
+                2020-05-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/go/" itemprop="url" rel="index">
+                    <span itemprop="name">go</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="go-mod开启"><a href="#go-mod开启" class="headerlink" title="go mod开启"></a>go mod开启</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">export GO111MODULE=on</span><br></pre></td></tr></table></figure>
+<p>至于网上说的这个命令</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">export GOPROXY=https://goproxy.cn</span><br></pre></td></tr></table></figure>
+<p>我理解是对于使用go get 命令下载不到的会尝试使用此代理吧，比如golang的x库</p>
+<h3 id="go-mod-常用命令"><a href="#go-mod-常用命令" class="headerlink" title="go mod 常用命令"></a>go mod 常用命令</h3><p>只列出几个常用的命令</p>
+<ol>
+<li>go mod init 初始化modules，使用这个命令以后，会创建go.mod 文件</li>
+<li>go mod download 下载依赖包到  $GOPATH/pkg 目录下</li>
+<li>go mod tidy 在修改了依赖包，或者版本以后，使用该命令会重新检查依赖关系，删除无用的，添加缺失新建的包</li>
+<li>go mod vendor 生成vendor目录，将依赖复制到vendor目录下面</li>
+<li>go list -m all 查看当前包的所有依赖关系</li>
+<li>go list -m -versions {package-name} 查看名字叫 package-name的包的所有可用版本</li>
+</ol>
+<h3 id="go-mod-的优点"><a href="#go-mod-的优点" class="headerlink" title="go mod 的优点"></a>go mod 的优点</h3><ol>
+<li>以前go的所有项目只能在$GOPATH/src/ 下去创建相应的包，目录是死的</li>
+<li></li>
+</ol>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/04/29/go-by-example-fileOper/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -368,9 +526,16 @@
 <p>很有意思的一个例子</p>
 <figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">trace</span><span class="params">(s <span class="keyword">string</span>)</span> <span class="title">string</span></span> &#123;</span><br><span class="line">    fmt.Println(<span class="string">"entering:"</span>, s)</span><br><span class="line">    <span class="keyword">return</span> s</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">un</span><span class="params">(s <span class="keyword">string</span>)</span></span> &#123;</span><br><span class="line">    fmt.Println(<span class="string">"leaving"</span>, s)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">a</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="keyword">defer</span> un(trace(<span class="string">"b"</span>))</span><br><span class="line">    fmt.Println(<span class="string">"in a"</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">b</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="keyword">defer</span> un(trace(<span class="string">"b"</span>))</span><br><span class="line">    fmt.Println(<span class="string">"in b"</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    b()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h4 id="defer-配合recover，错误回收和处理"><a href="#defer-配合recover，错误回收和处理" class="headerlink" title="defer 配合recover，错误回收和处理"></a>defer 配合recover，错误回收和处理</h4><figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="keyword">defer</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">        <span class="keyword">if</span> err = <span class="built_in">recover</span>(); err != <span class="literal">nil</span> &#123;</span><br><span class="line">            <span class="comment">//DO SOMETHING, like </span></span><br><span class="line">            <span class="comment">// close fd,</span></span><br><span class="line">            <span class="comment">// rollback transaction</span></span><br><span class="line">            <span class="comment">// term context ...</span></span><br><span class="line">            fmt.Println(err)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">panic</span>(<span class="number">55</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="panic-recover"><a href="#panic-recover" class="headerlink" title="panic recover"></a>panic recover</h3><p>在文章<a href="https://blog.golang.org/defer-panic-and-recover" target="_blank" rel="noopener">Defer, Panic, and Recover</a>中，这么介绍panic的<br>当函数F panic之后，会立马停止正常的流程，开始panic，所有子F中的defer函数会正常执行，在调用F的函数中，F也会表现的像panic一样，就这样沿着调用栈一路向上，直到当前goruntime的最外层。</p>
+<p>同样，这么介绍recover的<br>recover是用来控制当前正在panic的goruntime的，recover只在defer函数中有效，一般的顺序执行调用recover，返回nil，没有其他什么效果</p>
+<p>举例说明</p>
+<figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    f()</span><br><span class="line">    fmt.Println(<span class="string">"Return normally from f."</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">f</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="keyword">defer</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">        <span class="keyword">if</span> r := <span class="built_in">recover</span>(); r != <span class="literal">nil</span> &#123;</span><br><span class="line">            fmt.Println(<span class="string">"Recover in f."</span>, r)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;()</span><br><span class="line"></span><br><span class="line">    fmt.Println(<span class="string">"Calling g."</span>)</span><br><span class="line">    g(<span class="number">0</span>)</span><br><span class="line">    fmt.Println(<span class="string">"Return normally from g."</span>) <span class="comment">//注意这里</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">g</span><span class="params">(i <span class="keyword">int</span>)</span></span> &#123;</span><br><span class="line">    <span class="keyword">if</span> i &gt; <span class="number">3</span> &#123;</span><br><span class="line">        fmt.Println(<span class="string">"Panicking!"</span>)</span><br><span class="line">        <span class="built_in">panic</span>(fmt.Sprintf(<span class="string">"%v"</span>, i))</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">defer</span> fmt.Println(<span class="string">"Defer in g"</span>, i)</span><br><span class="line">    fmt.Println(<span class="string">"Printing in g"</span>, i)</span><br><span class="line">    g(i + <span class="number">1</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 
-
+<hr>
+<ol>
+<li>Andrew Gerrand写过一篇文章<img src="https://blog.golang.org/defer-panic-and-recover" alt="Defer, Panic, and Recover"></li>
+</ol>
 
           
         
@@ -1108,7 +1273,7 @@ attention:<strong>场景二已经在c++14标准里删除</strong></li>
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-count">6</span>
                 <span class="site-state-item-name">posts</span>
               </a>
             </div>
@@ -1130,7 +1295,7 @@ attention:<strong>场景二已经在c++14标准里删除</strong></li>
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">10</span>
+                <span class="site-state-item-count">11</span>
                 <span class="site-state-item-name">tags</span>
               </a>
             </div>
