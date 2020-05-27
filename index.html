@@ -367,6 +367,8 @@
 <p>至于网上说的这个命令</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">export GOPROXY=https://goproxy.cn</span><br></pre></td></tr></table></figure>
 <p>我理解是对于使用go get 命令下载不到的会尝试使用此代理吧，比如golang的x库</p>
+<p>还有其他几个命令的具体含义</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 设置不走 proxy 的私有仓库，多个用逗号相隔（可选）</span></span><br><span class="line">go env -w GOPRIVATE=*.corp.example.com</span><br><span class="line"><span class="meta">#</span><span class="bash"> 设置不走 proxy 的私有组织（可选）</span></span><br><span class="line">go env -w GOPRIVATE=example.com/org_name</span><br></pre></td></tr></table></figure>
 <h3 id="go-mod-常用命令"><a href="#go-mod-常用命令" class="headerlink" title="go mod 常用命令"></a>go mod 常用命令</h3><p>只列出几个常用的命令</p>
 <ol>
 <li>go mod init 初始化modules，使用这个命令以后，会创建go.mod 文件</li>
