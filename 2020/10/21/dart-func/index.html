@@ -102,7 +102,7 @@
 <meta property="og:description" content="按照函数的参数定义方式来分类1. 命名参数使用{}定义的参数默认都是可选的，但是可以通过@require关键字把某个参数置为必须，推荐使用这种方式 123456&#x2F;&#x2F; 定义一个函数时，使用&amp;#123;参数1， 参数2， ...&amp;#125;的格式来指定命名参数void enableFlags(&amp;#123;bool bold, bool hidden&amp;#125;) &amp;#123;   ....&amp;#125;">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2020-10-21T06:53:21.000Z">
-<meta property="article:modified_time" content="2020-10-28T02:49:23.028Z">
+<meta property="article:modified_time" content="2020-11-02T07:10:50.575Z">
 <meta property="article:author" content="Gavin Lau">
 <meta property="article:tag" content="flutter">
 <meta property="article:tag" content="dart">
@@ -378,6 +378,13 @@
 <h3 id="2-匿名函数-也叫闭包，lamda函数"><a href="#2-匿名函数-也叫闭包，lamda函数" class="headerlink" title="2. 匿名函数,也叫闭包，lamda函数"></a>2. 匿名函数,也叫闭包，lamda函数</h3><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//带位置参数x</span></span><br><span class="line">(<span class="built_in">num</span> x) =&gt; x;</span><br><span class="line"><span class="comment">//带可选位置参数</span></span><br><span class="line">(<span class="built_in">int</span> x, [<span class="built_in">int</span> step]) =&gt; x + step;</span><br><span class="line"><span class="comment">//带可选命名参数</span></span><br><span class="line">(<span class="built_in">int</span> x, &#123;<span class="built_in">int</span> step1, <span class="built_in">int</span> step2&#125;) =&gt; x + step1 + step2;</span><br></pre></td></tr></table></figure>
 
 <h3 id="3-局部函数"><a href="#3-局部函数" class="headerlink" title="3. 局部函数"></a>3. 局部函数</h3><p>Dart中是可以再定义一个位于某个函数内部的函数，使得函数的作用域最小化</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//定义外部函数fibonacci</span></span><br><span class="line"><span class="built_in">int</span> fibonacci(<span class="built_in">int</span> n) &#123;</span><br><span class="line">    <span class="comment">//定义局部函数lastTwo</span></span><br><span class="line">    <span class="built_in">List</span>&lt;<span class="built_in">int</span>&gt; lastTwo(<span class="built_in">int</span> n) &#123;</span><br><span class="line">        <span class="keyword">if</span>(n &lt; <span class="number">1</span>) &#123;</span><br><span class="line">           <span class="keyword">return</span> &lt;<span class="built_in">int</span>&gt;[<span class="number">0</span>, <span class="number">1</span>];  </span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">           <span class="keyword">var</span> p = lastTwo(n - <span class="number">1</span>);</span><br><span class="line">           <span class="keyword">return</span> &lt;<span class="built_in">int</span>&gt;[p[<span class="number">1</span>], p[<span class="number">0</span>] + p[<span class="number">1</span>]];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> lastTwo(n)[<span class="number">1</span>];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<p>参考文档：</p>
+<ul>
+<li><a href="https://juejin.im/post/6844903989843066894" target="_blank" rel="noopener">Dart语法篇之函数的使用(四)</a></li>
+</ul>
 
       
     </div>
