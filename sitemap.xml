@@ -2,6 +2,20 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://gavin-lau.github.io/2020/11/04/flutter-async/</loc>
+    
+    <lastmod>2020-11-04</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://gavin-lau.github.io/2020/11/04/flutter-factory/</loc>
+    
+    <lastmod>2020-11-04</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://gavin-lau.github.io/2020/11/02/flutter-stateless-widget/</loc>
     
     <lastmod>2020-11-02</lastmod>
@@ -95,7 +109,7 @@
 
   <url>
     <loc>https://gavin-lau.github.io/</loc>
-    <lastmod>2020-11-03</lastmod>
+    <lastmod>2020-11-04</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
@@ -103,119 +117,119 @@
   
   <url>
     <loc>https://gavin-lau.github.io/tags/c-11/</loc>
-    <lastmod>2020-11-03</lastmod>
+    <lastmod>2020-11-04</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://gavin-lau.github.io/tags/auto/</loc>
-    <lastmod>2020-11-03</lastmod>
+    <lastmod>2020-11-04</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://gavin-lau.github.io/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1/</loc>
-    <lastmod>2020-11-03</lastmod>
+    <lastmod>2020-11-04</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://gavin-lau.github.io/tags/flutter/</loc>
-    <lastmod>2020-11-03</lastmod>
+    <lastmod>2020-11-04</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://gavin-lau.github.io/tags/dart/</loc>
-    <lastmod>2020-11-03</lastmod>
+    <lastmod>2020-11-04</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://gavin-lau.github.io/tags/flutter%E5%AD%A6%E4%B9%A0/</loc>
-    <lastmod>2020-11-03</lastmod>
+    <lastmod>2020-11-04</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://gavin-lau.github.io/tags/golang/</loc>
-    <lastmod>2020-11-03</lastmod>
+    <lastmod>2020-11-04</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://gavin-lau.github.io/tags/go/</loc>
-    <lastmod>2020-11-03</lastmod>
+    <lastmod>2020-11-04</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://gavin-lau.github.io/tags/go-by-example/</loc>
-    <lastmod>2020-11-03</lastmod>
+    <lastmod>2020-11-04</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://gavin-lau.github.io/tags/defer/</loc>
-    <lastmod>2020-11-03</lastmod>
+    <lastmod>2020-11-04</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://gavin-lau.github.io/tags/panic/</loc>
-    <lastmod>2020-11-03</lastmod>
+    <lastmod>2020-11-04</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://gavin-lau.github.io/tags/recover/</loc>
-    <lastmod>2020-11-03</lastmod>
+    <lastmod>2020-11-04</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://gavin-lau.github.io/tags/go-mod/</loc>
-    <lastmod>2020-11-03</lastmod>
+    <lastmod>2020-11-04</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://gavin-lau.github.io/tags/jwt/</loc>
-    <lastmod>2020-11-03</lastmod>
+    <lastmod>2020-11-04</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://gavin-lau.github.io/tags/token/</loc>
-    <lastmod>2020-11-03</lastmod>
+    <lastmod>2020-11-04</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://gavin-lau.github.io/tags/command-line/</loc>
-    <lastmod>2020-11-03</lastmod>
+    <lastmod>2020-11-04</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://gavin-lau.github.io/tags/context/</loc>
-    <lastmod>2020-11-03</lastmod>
+    <lastmod>2020-11-04</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
@@ -224,35 +238,35 @@
   
   <url>
     <loc>https://gavin-lau.github.io/categories/c/</loc>
-    <lastmod>2020-11-03</lastmod>
+    <lastmod>2020-11-04</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://gavin-lau.github.io/categories/%E5%90%8E%E5%8F%B0%E6%A1%86%E6%9E%B6/</loc>
-    <lastmod>2020-11-03</lastmod>
+    <lastmod>2020-11-04</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://gavin-lau.github.io/categories/flutter/</loc>
-    <lastmod>2020-11-03</lastmod>
+    <lastmod>2020-11-04</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://gavin-lau.github.io/categories/go/</loc>
-    <lastmod>2020-11-03</lastmod>
+    <lastmod>2020-11-04</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://gavin-lau.github.io/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1/</loc>
-    <lastmod>2020-11-03</lastmod>
+    <lastmod>2020-11-04</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>

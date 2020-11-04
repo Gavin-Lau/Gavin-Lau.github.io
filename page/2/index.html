@@ -270,6 +270,340 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://gavin-lau.github.io/2020/04/26/go-by-example-context/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Gavin Lau">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gavin's Study Diary">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/04/26/go-by-example-context/" itemprop="url">go-by-example(二) 之 context</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-04-26T12:53:21+08:00">
+                2020-04-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/go/" itemprop="url" rel="index">
+                    <span itemprop="name">go</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="对于Context的概念之前也都不是很清楚，所以专门拿出来详细学习"><a href="#对于Context的概念之前也都不是很清楚，所以专门拿出来详细学习" class="headerlink" title="对于Context的概念之前也都不是很清楚，所以专门拿出来详细学习"></a>对于Context的概念之前也都不是很清楚，所以专门拿出来详细学习</h2><h2 id="context的使用场景"><a href="#context的使用场景" class="headerlink" title="context的使用场景"></a>context的使用场景</h2><p>与goruntime配合使用，也就是说他用在单业务跨多协程，保持各个协程高度一致的作用，当上层的goruntime执行失败时，可以通过context传递信息到底层的goruntime，尽量早的释放资源。</p>
+<h2 id="Context的底层结构"><a href="#Context的底层结构" class="headerlink" title="Context的底层结构"></a>Context的底层结构</h2><figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> Context <span class="keyword">interface</span> &#123;</span><br><span class="line">	Deadline() (deadline time.Time, ok <span class="keyword">bool</span>)</span><br><span class="line">	Done() &lt;- <span class="keyword">chan</span> <span class="keyword">struct</span>&#123;&#125;</span><br><span class="line">	Err() error</span><br><span class="line">	Value(key <span class="keyword">interface</span>&#123;&#125;) <span class="keyword">interface</span>&#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="主要对于这4个接口的理解，对于context的理解和使用"><a href="#主要对于这4个接口的理解，对于context的理解和使用" class="headerlink" title="主要对于这4个接口的理解，对于context的理解和使用"></a>主要对于这4个接口的理解，对于context的理解和使用</h2><ul>
+<li>Deadline: 返回当前context的任务将要被取消的deadline，如果没有deadline，ok 返回false</li>
+<li>Done: 当前context被取消时，将返回一个关闭的channel，这里的利用的channel的特性:  <blockquote>
+<p>如果channel c已经被关闭,继续往它发送数据会导致panic(send on closed channel),但是从这个关闭的channel中不但可以读取出已发送的数据，还可以不断的读取零值</p>
+</blockquote>
+<figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">c := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">int</span>, <span class="number">10</span>)</span><br><span class="line">c &lt;- <span class="number">1</span></span><br><span class="line">c &lt;- <span class="number">2</span></span><br><span class="line"><span class="built_in">close</span>(c)</span><br><span class="line">fmt.Println(&lt;-c) <span class="comment">//1</span></span><br><span class="line">fmt.Println(&lt;-c) <span class="comment">//2</span></span><br><span class="line">fmt.Println(&lt;-c) <span class="comment">//0</span></span><br><span class="line">fmt.Println(&lt;-c) <span class="comment">//0</span></span><br></pre></td></tr></table></figure></li>
+<li>Err 配合Done使用，在Done返回后，Err告诉程序猿Done的原因</li>
+<li>Value 用于同一个上下问中，在不同的goruntime中传递特定的数据，是一个键值队，所以要通过一个key获取对应的value，线程安全</li>
+</ul>
+<h2 id="使用方法"><a href="#使用方法" class="headerlink" title="使用方法"></a>使用方法</h2><h3 id="golang提供了4个创建context的方式"><a href="#golang提供了4个创建context的方式" class="headerlink" title="golang提供了4个创建context的方式:"></a>golang提供了4个创建context的方式:</h3><figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 创建一个上下文，返回cancel函数，需要主动调用cancel函数来结束这个上下文</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">WithCancel</span><span class="params">(parent Context)</span> <span class="params">(ctx Context, cancel CancelFunc)</span></span> </span><br><span class="line"><span class="comment">// 创建一个带超时时间点的上下文，也会返回cancel函数，用于主动结束这个上下文</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">WithDeadline</span><span class="params">(parent Context, deadline time.Time)</span> <span class="params">(Context, CancelFunc)</span></span></span><br><span class="line"><span class="comment">// 创建一个带超时时长的上下文</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">WithTimeout</span><span class="params">(parent Context, timeout time.Duration)</span> <span class="params">(Context, CancelFunc)</span></span></span><br><span class="line"><span class="comment">// 给当前上下文插入数据，或者修改数据</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">WithValue</span><span class="params">(parent Context, key, val <span class="keyword">interface</span>&#123;&#125;)</span> <span class="title">Context</span></span></span><br></pre></td></tr></table></figure>
+<h3 id="两个很典型的例子"><a href="#两个很典型的例子" class="headerlink" title="两个很典型的例子"></a>两个很典型的例子</h3><ol>
+<li>一个context控制多个goruntime<figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	ctx, cancel := context.WithCancel(context.Background())</span><br><span class="line">	<span class="keyword">go</span> watch(ctx,<span class="string">"【监控1】"</span>)</span><br><span class="line">	<span class="keyword">go</span> watch(ctx,<span class="string">"【监控2】"</span>)</span><br><span class="line">	<span class="keyword">go</span> watch(ctx,<span class="string">"【监控3】"</span>)</span><br><span class="line"></span><br><span class="line">	time.Sleep(<span class="number">10</span> * time.Second)</span><br><span class="line">	fmt.Println(<span class="string">"可以了，通知监控停止"</span>)</span><br><span class="line">	cancel()</span><br><span class="line">	<span class="comment">//为了检测监控过是否停止，如果没有监控输出，就表示停止了</span></span><br><span class="line">	time.Sleep(<span class="number">5</span> * time.Second)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">watch</span><span class="params">(ctx context.Context, name <span class="keyword">string</span>)</span></span> &#123;</span><br><span class="line">	<span class="keyword">for</span> &#123;</span><br><span class="line">		<span class="keyword">select</span> &#123;</span><br><span class="line">		<span class="keyword">case</span> &lt;-ctx.Done():</span><br><span class="line">			fmt.Println(name,<span class="string">"监控退出，停止了..."</span>)</span><br><span class="line">			<span class="keyword">return</span></span><br><span class="line">		<span class="keyword">default</span>:</span><br><span class="line">			fmt.Println(name,<span class="string">"goroutine监控中..."</span>)</span><br><span class="line">			time.Sleep(<span class="number">2</span> * time.Second)</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>context WithValue使用<figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> key <span class="keyword">string</span>=<span class="string">"name"</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	ctx, cancel := context.WithCancel(context.Background())</span><br><span class="line">	<span class="comment">//附加值</span></span><br><span class="line">	valueCtx:=context.WithValue(ctx,key,<span class="string">"【监控1】"</span>)</span><br><span class="line">	<span class="keyword">go</span> watch(valueCtx)</span><br><span class="line">	time.Sleep(<span class="number">10</span> * time.Second)</span><br><span class="line">	fmt.Println(<span class="string">"可以了，通知监控停止"</span>)</span><br><span class="line">	cancel()</span><br><span class="line">	<span class="comment">//为了检测监控过是否停止，如果没有监控输出，就表示停止了</span></span><br><span class="line">	time.Sleep(<span class="number">5</span> * time.Second)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">watch</span><span class="params">(ctx context.Context)</span></span> &#123;</span><br><span class="line">	<span class="keyword">for</span> &#123;</span><br><span class="line">		<span class="keyword">select</span> &#123;</span><br><span class="line">		<span class="keyword">case</span> &lt;-ctx.Done():</span><br><span class="line">			<span class="comment">//取出值</span></span><br><span class="line">			fmt.Println(ctx.Value(key),<span class="string">"监控退出，停止了..."</span>)</span><br><span class="line">			<span class="keyword">return</span></span><br><span class="line">		<span class="keyword">default</span>:</span><br><span class="line">			<span class="comment">//取出值</span></span><br><span class="line">			fmt.Println(ctx.Value(key),<span class="string">"goroutine监控中..."</span>)</span><br><span class="line">			time.Sleep(<span class="number">2</span> * time.Second)</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<h2 id="attentions"><a href="#attentions" class="headerlink" title="attentions"></a>attentions</h2><p>context一般配合select使用，对于select的使用注意带default分支和不带default分支的区别<br><code>当 select 中的其它分支都没有准备好时，default 分支就会执行(这里Sleep的使用要慎重考虑)。</code></p>
+<figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	tick := time.Tick(<span class="number">100</span> * time.Millisecond)</span><br><span class="line">	boom := time.After(<span class="number">500</span> * time.Millisecond)</span><br><span class="line">	<span class="keyword">for</span> &#123;</span><br><span class="line">		<span class="keyword">select</span> &#123;</span><br><span class="line">		<span class="keyword">case</span> &lt;-tick:</span><br><span class="line">			fmt.Println(<span class="string">"tick."</span>)</span><br><span class="line">		<span class="keyword">case</span> &lt;-boom:</span><br><span class="line">			fmt.Println(<span class="string">"BOOM!"</span>)</span><br><span class="line">			<span class="keyword">return</span></span><br><span class="line">		<span class="keyword">default</span>:</span><br><span class="line">			fmt.Println(<span class="string">"    ."</span>)</span><br><span class="line">			time.Sleep(<span class="number">50</span> * time.Millisecond)</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://gavin-lau.github.io/2020/04/24/go-by-example1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Gavin Lau">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gavin's Study Diary">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/04/24/go-by-example1/" itemprop="url">go-by-example(一) 之 exit、singal、exec</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-04-24T12:53:21+08:00">
+                2020-04-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/go/" itemprop="url" rel="index">
+                    <span itemprop="name">go</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="exit"><a href="#exit" class="headerlink" title="exit"></a>exit</h2><h3 id="1-defer-After-os-Exit"><a href="#1-defer-After-os-Exit" class="headerlink" title="1. defer After os.Exit"></a>1. defer After os.Exit</h3><p>这个例子中的defer函数永远也不会执行到</p>
+<h3 id="2-返回操作系统状态本程序的指示"><a href="#2-返回操作系统状态本程序的指示" class="headerlink" title="2. 返回操作系统状态本程序的指示"></a>2. 返回操作系统状态本程序的指示</h3><p>go语言不像其他语言使用非零的返回值作为main函数的返回值，返回给操作系统，以表示错误，如果需要，使用本例子中的os.Exit</p>
+<figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="keyword">defer</span> fmt.Println(<span class="string">"!"</span>)</span><br><span class="line"></span><br><span class="line">	os.Exit(<span class="number">4</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="signal"><a href="#signal" class="headerlink" title="signal"></a>signal</h2><h3 id="1-unix信号"><a href="#1-unix信号" class="headerlink" title="1. unix信号"></a>1. unix信号</h3><p>典型的SIGINT、SIGTERM，os.signal包的用途就是改变这些信号的默认动作</p>
+<h3 id="2-实现方式"><a href="#2-实现方式" class="headerlink" title="2. 实现方式"></a>2. 实现方式</h3><p>golang推荐使用chan来实现</p>
+<h3 id="3-几个重要的包内"><a href="#3-几个重要的包内" class="headerlink" title="3. 几个重要的包内"></a>3. 几个重要的包内</h3><ul>
+<li>Notify:改变信号的默认行为</li>
+<li>Ignore: 忽略某些信号,什么都不处理</li>
+<li>Reset: 重置信号的行为到默认</li>
+<li>Stop: 停止接收信号，但是并没有重置默认行为。TODO:need more info</li>
+</ul>
+<h3 id="4-例外"><a href="#4-例外" class="headerlink" title="4. 例外"></a>4. 例外</h3><p>程序无法捕获信号 SIGKILL 和 SIGSTOP （终止和暂停进程），因此 os/signal 包对这两个信号无效。</p>
+<figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	sigs := <span class="built_in">make</span>(<span class="keyword">chan</span> os.Signal, <span class="number">1</span>)</span><br><span class="line">	done := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">bool</span>, <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">	signal.Notify(sigs, syscall.SIGINT, syscall.SIGTERM) <span class="comment">//注册SIGINT和SIGTERM到chan sigs</span></span><br><span class="line"></span><br><span class="line">	<span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">		sig := &lt;-sigs</span><br><span class="line">		fmt.Println()</span><br><span class="line">		fmt.Println(sig)</span><br><span class="line">		done &lt;- <span class="literal">true</span></span><br><span class="line">	&#125;()</span><br><span class="line"></span><br><span class="line">	fmt.Println(<span class="string">"awaiting signal"</span>)</span><br><span class="line">	&lt;-done</span><br><span class="line">	fmt.Println(<span class="string">"exiting"</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="Exec"><a href="#Exec" class="headerlink" title="Exec"></a>Exec</h2><h3 id="对比unix的exec族函数"><a href="#对比unix的exec族函数" class="headerlink" title="对比unix的exec族函数"></a>对比unix的exec族函数</h3><p>unix的exec族函数作用是这么写的：</p>
+<blockquote>
+<p>exec函数族的作用是根据指定的文件名找到可执行文件，并用它来取代调用进程的内容  </p>
+</blockquote>
+<p>也就是说要执行的函数会替换当前程序的代码段，数据段等,且多和fork函数配合，来替换fork以后多子进程</p>
+<p>go 的exec函数也是这么说的：</p>
+<blockquote>
+<p>we just want to completely replace the current Go process with another (perhaps non-Go) one</p>
+</blockquote>
+<h3 id="用法"><a href="#用法" class="headerlink" title="用法"></a>用法</h3><figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	err := syscall.Exec(<span class="string">"/bin/ls"</span>, []<span class="keyword">string</span>&#123;<span class="string">"ls"</span>, <span class="string">"-al"</span>&#125;, os.Environ())</span><br><span class="line">	log.Println(err)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="因为go没有fork函数，所以使用goruntime配合exec函数的使用"><a href="#因为go没有fork函数，所以使用goruntime配合exec函数的使用" class="headerlink" title="因为go没有fork函数，所以使用goruntime配合exec函数的使用"></a>因为go没有fork函数，所以使用goruntime配合exec函数的使用</h3><figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//ChildProc 函数</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">ChildProc</span><span class="params">()</span></span> &#123;</span><br><span class="line">	binary, lookErr := exec.LookPath(<span class="string">"ls"</span>)</span><br><span class="line">	<span class="keyword">if</span> lookErr != <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="built_in">panic</span>(lookErr)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> execErr := syscall.Exec(binary, []<span class="keyword">string</span>&#123;<span class="string">"ls"</span>, <span class="string">"-a"</span>, <span class="string">"-l"</span>, <span class="string">"-h"</span>&#125;, os.Environ()); execErr != <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="built_in">panic</span>(execErr)</span><br><span class="line">	&#125;</span><br><span class="line">	fmt.Println(<span class="string">"child proc exiting"</span>)</span><br><span class="line">	process &lt;- <span class="literal">true</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//main 函数</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="keyword">go</span> ChildProc()</span><br><span class="line"></span><br><span class="line">	time.Sleep(<span class="number">10</span>*time.Duration(time.Second))</span><br><span class="line"></span><br><span class="line">	&lt;-process</span><br><span class="line">	fmt.Println(<span class="string">"main Proc Exiting"</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>不管我用怎样的方式去阻塞主进程，实际结果就是执行完”ls -a -l -h”之后，程序立马退出，也证实了猜想，应该是调用这个exec函数之后，整个代码段会被替换掉为了解决这个问题，了解下函数<a href="https://stackoverflow.com/questions/28370646/how-do-i-fork-a-go-process" target="_blank" rel="noopener">syscall.ForkExec()</a></p>
+<h3 id="更优方案-一-使用syscall-ForkExec"><a href="#更优方案-一-使用syscall-ForkExec" class="headerlink" title="更优方案(一):使用syscall.ForkExec"></a>更优方案(一):使用syscall.ForkExec</h3><figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//ChildProc 函数</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">ForkExec</span><span class="params">()</span></span> &#123;</span><br><span class="line">	pid, err := syscall.ForkExec(<span class="string">"ls"</span>, []<span class="keyword">string</span>&#123;<span class="string">"-l"</span>, <span class="string">"-h"</span>, <span class="string">"-a"</span>&#125;, &amp;syscall.ProcAttr&#123;</span><br><span class="line">		Env:   os.Environ(),</span><br><span class="line">		Files: []<span class="keyword">uintptr</span>&#123;os.Stdin.Fd(), os.Stdout.Fd(), os.Stderr.Fd()&#125;,</span><br><span class="line">		Dir: <span class="string">"/bin"</span>,</span><br><span class="line">	&#125;)</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		fmt.Println(err.Error())</span><br><span class="line">		<span class="built_in">panic</span>(err)</span><br><span class="line">	&#125;</span><br><span class="line">	fmt.Printf(<span class="string">"child proc[%d] exiting"</span>, pid)</span><br><span class="line"></span><br><span class="line">	done &lt;- <span class="literal">true</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//main函数</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="comment">//go ChildProc()</span></span><br><span class="line">	<span class="keyword">go</span> ForkExec()</span><br><span class="line">	time.Sleep(<span class="number">10</span>*time.Duration(time.Second))</span><br><span class="line">	&lt;-done</span><br><span class="line">	fmt.Println(<span class="string">"main Proc Exiting"</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>输出结果:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">child proc[3767] exiting.         </span><br><span class="line">[         cat       cp        dash      dd        echo      expr      kill      launchctl ln        mkdir     pax       pwd       rmdir     sleep     sync      test      wait4path</span><br><span class="line">..        bash      chmod     csh       date      df        ed        hostname  ksh       link      ls        mv        ps        rm        sh        stty      tcsh      unlink    zsh</span><br><span class="line">main Proc Exiting</span><br><span class="line">Exiting.</span><br><span class="line"></span><br><span class="line">Debugger finished with exit code 0</span><br></pre></td></tr></table></figure>
+<h3 id="更优方案-二-：exec-Command函数"><a href="#更优方案-二-：exec-Command函数" class="headerlink" title="更优方案(二)：exec.Command函数"></a>更优方案(二)：exec.Command函数</h3><figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="comment">//go ChildProc()</span></span><br><span class="line">	<span class="comment">//go ForkExec()</span></span><br><span class="line">	<span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">		cmd := exec.Command(<span class="string">"echo"</span>, <span class="string">"show me"</span>)</span><br><span class="line">		cmd.Start()</span><br><span class="line">		fmt.Println(<span class="string">"child process[%d] started"</span>, cmd.Process.Pid)</span><br><span class="line">		cmd.Wait()</span><br><span class="line">		done &lt;- <span class="literal">true</span></span><br><span class="line">	&#125;()</span><br><span class="line"></span><br><span class="line">	time.Sleep(<span class="number">10</span>*time.Duration(time.Second))</span><br><span class="line"></span><br><span class="line">	&lt;-done</span><br><span class="line">	fmt.Println(<span class="string">"main Proc Exiting"</span>)</span><br></pre></td></tr></table></figure>
+<p>输出结果</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Got a connection, launched process &#x2F;Users&#x2F;gavingkliu&#x2F;Work&#x2F;gohome&#x2F;bin&#x2F;go_build_gobyexample (pid &#x3D; 8240).</span><br><span class="line">child process[%d] started 8242</span><br><span class="line">main Proc Exiting</span><br><span class="line">Exiting.</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://gavin-lau.github.io/2020/04/21/auto/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -463,7 +797,7 @@ attention:<strong>场景二已经在c++14标准里删除</strong></li>
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">11</span>
+                <span class="site-state-item-count">13</span>
                 <span class="site-state-item-name">posts</span>
               </a>
             </div>
