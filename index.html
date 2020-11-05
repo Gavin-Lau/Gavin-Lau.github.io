@@ -504,11 +504,24 @@
       
         
           
-            <h2 id="async、await、then和future的用法"><a href="#async、await、then和future的用法" class="headerlink" title="async、await、then和future的用法"></a>async、await、then和future的用法</h2><p>当你作为一个Dart/Flutter新手的时候，这几个会让你感到非常的迷惑，但是当你跑几个例子之后，他们就显得不那么难以捉摸。<br><font color= #48D1CC > <strong>Async</strong> </font>意思是这个函数是个异步时态的，你不能立马得到他的结果<br><font color= #48D1CC > <strong>Await</strong> </font>意思是在这里等，直到这个函数结束了返回你想要拿到的结果<br><font color= #48D1CC > <strong>Future</strong> </font>是一种”在将来才会得到”，从带有async函数的返回的类型。成功时会走(.then)分支 失败时走(.catchError)分支<br><font color= #48D1CC > <strong>.Then((value){…})</strong></font>，是一种当futrue类型是成功的时候，预约的回调定义</p>
+            <h2 id="async、await、then和future的用法"><a href="#async、await、then和future的用法" class="headerlink" title="async、await、then和future的用法"></a>async、await、then和future的用法</h2><p>首先明确2点：</p>
+<ol>
+<li><font color= #48D1CC > <strong>async+await形式的语法只是 futrue类型语法的一个语法糖，使用futrue泛型语法，就不能使用async+await形式</strong> </font></li>
+<li></li>
+</ol>
+<p>当你作为一个Dart/Flutter新手的时候，这几个会让你感到非常的迷惑，但是当你跑几个例子之后，他们就显得不那么难以捉摸。</p>
+<ul>
+<li><font color= #48D1CC > <strong>Async</strong> </font>意思是这个函数是个异步时态的，你不能立马得到他的结果</li>
+<li><font color= #48D1CC > <strong>Await</strong> </font>意思是在这里等，直到这个函数结束了返回你想要拿到的结果</li>
+<li><font color= #48D1CC > <strong>Future</strong> </font>是一种”在将来才会得到”，从带有async函数的返回的类型。成功时会走(.then)分支 失败时走(.catchError)分支</li>
+<li><font color= #48D1CC > <strong>.Then((value){…})</strong></font>，是一种当futrue类型是成功的时候，预约的回调定义</li>
+</ul>
 <figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> main() <span class="keyword">async</span> &#123;</span><br><span class="line">  <span class="built_in">print</span>(getMeSomeFood());         </span><br><span class="line">  <span class="built_in">print</span>(<span class="keyword">await</span> getMeSomethingBetter());       </span><br><span class="line">  maybeSomethingSweet().then((<span class="built_in">String</span> value) &#123;</span><br><span class="line">    <span class="built_in">print</span>(value);                    </span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br><span class="line">Future&lt;<span class="built_in">String</span>&gt; getMeSomeFood() <span class="keyword">async</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="string">"an apple"</span>;</span><br><span class="line">&#125;</span><br><span class="line">Future&lt;<span class="built_in">String</span>&gt; getMeSomethingBetter() <span class="keyword">async</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="string">"a burger?"</span>;</span><br><span class="line">&#125;</span><br><span class="line">Future&lt;<span class="built_in">String</span>&gt; maybeSomethingSweet() <span class="keyword">async</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="string">"a chocolate cake!!"</span>;</span><br><span class="line">&#125;</span><br><span class="line">Future&lt;<span class="built_in">String</span>&gt; bye() &#123;          <span class="comment">//will not compile, add async</span></span><br><span class="line">  <span class="keyword">return</span> <span class="string">"see you soon! :)"</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>输出结果：</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Instance of ‘_Future&lt;String&gt;’</span><br><span class="line">a burger?</span><br><span class="line">a chocolate cake!!</span><br></pre></td></tr></table></figure>
+
+
 
 
           
@@ -1106,6 +1119,7 @@
 <li>同上介绍redux状态管理 <a href="https://zhuanlan.zhihu.com/p/55587462" target="_blank" rel="noopener">在 Flutter 使用 Redux 来共享状态和管理单一数据</a></li>
 <li>介绍Dart函数的各种形式的文章 <a href="https://juejin.im/post/6844903989843066894" target="_blank" rel="noopener">Dart语法篇之函数的使用(四)</a></li>
 <li>官方dio例子 <a href="https://github.com/flutterchina/dio/tree/master/example" target="_blank" rel="noopener">dio/example/</a></li>
+<li>flutter 利用factory实现单例模式<a href="https://zhuanlan.zhihu.com/p/133924017" target="_blank" rel="noopener">dart中factory关键词的使用</a></li>
 </ol>
 <h3 id="flutter-TODOs"><a href="#flutter-TODOs" class="headerlink" title="flutter TODOs"></a>flutter TODOs</h3><ol>
 <li>dio库简单封装，加到项目中去</li>
